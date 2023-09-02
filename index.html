@@ -12,12 +12,29 @@
     <div class="libraryHeader">
       <h1>Library<i class="fa-solid fa-book fa-xs"></i></h1>
     </div>
-    <div class="addBook">
-      <button class="fill">
+    <div id="books">
+
+    </div>
+    <div class="buttonContainer">
+      <button id="fill">
         <i class="fa-solid fa-plus"></i>
         Add Book
       </button>
     </div>
+    <div id="inputModal" class="inputContainer">
+        <input id="title" placeholder="Title">
+        <input id="author" placeholder="Author">  
+        <input id="pages" type="number" placeholder="Pages">
+
+        <!-- Checkbox for read status -->
+        <div class="checkbox">
+          <label for="read">Have you read it?</label>
+          <input type="checkbox" id="read">
+        </div>
+        <!-- Submit button -->  
+        <button id="add">Add</button>
+    </div>
   </div>
+  <script src="script.js"></script>
 </body>
 </html>
