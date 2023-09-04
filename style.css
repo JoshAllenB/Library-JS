@@ -162,7 +162,8 @@ body{
   height: 7%;
   width: 50%;
   margin: 15px;
-  font-size: 18px;
+  font-size: 20px;
+  padding: 5px;
 }
 
 ::placeholder {
@@ -175,7 +176,7 @@ body{
   width: 40%;
   height: 10%;
   margin: 20px;
-  padding: 10px 20px;
+  padding: 10px ;
   border-radius: 40px;
   background-color: green;
   color: #fff;
@@ -208,29 +209,85 @@ body{
   margin-top: 5%;
   width: 100%;
   height: 100%;
-  background: rgb(196, 196, 196);
+  background: rgb(255, 255, 255);
   z-index: 999;
-
   display: flex;
   flex-wrap: wrap;
 }
 
 .card {
-  height: 20%;
-  width: 10%;
-  padding: 20px;
-  margin: 20px;
-  border: 2px solid #ddd;
-  background: #fff;
+  position: relative;
+  height: 30%;
+  width: 15%;
+  padding: 10px;
+  margin: 30px;
+  text-align: center;
+  font-size: 22px;
+  color: #000000;
+  transition: 0.2s;
+  cursor: pointer;
+  border: 2px solid rgba(87, 87, 87, 0.48);
   border-radius: 20px;
-
+  -webkit-box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.61); 
+  box-shadow: 3px 4px 5px 0px rgba(0,0,0,0.61);
 }
 
-.read {
-  color: blue;
-  cursor: pointer; 
+.card:hover {
+  transform: translateY(-10px);
 }
 
-.remove {
-  color: red;
+.card h3 {
+  margin: 0;
+  margin-top: 10px;
+}
+
+.card select{
+  margin-bottom: 10px;
+}
+
+.statusContainer {
+  width: 100%;
+  height: 15%;
+  margin-bottom: 20px;
+}
+
+.statusContainer select{
+  display: inline-block;
+  height: 100%;
+  width: 35%;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.removeContainer {
+  width: 100%;
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeContainer button{
+  width: 30%;
+  height: 100%;
+  background: #ff2a2a; 
+  border: 1px solid #cc2525;
+  box-shadow: 0px 2px 0 #cc2525, 2px 4px 6px #e62d2d;
+  font-weight: 900;
+  letter-spacing: 1px;
+  transition: all 150ms linear;
+  color: #fff;
+}
+
+.removeContainer button:hover {
+  background: #e62626;
+  border: 1px solid rgba(0, 0, 0, .05);
+  box-shadow: 1px 1px 2px rgba(255, 255, 255, .2); 
+  color: #ff5252;
+  text-decoration: none;
+  text-shadow: -1px -1px 0 #990000;
+  transition: all 250ms linear;
 }
