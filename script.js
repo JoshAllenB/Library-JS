@@ -1,134 +1,120 @@
 // PopUp Input Modal
-const openBtn = document.getElementById("fill")
-const closeBtn = document.getElementById("add")
-const popupModal = document.getElementById("inputModal")
+class PopUpModal {
+  constructor(openBtnId, closeBtnId, modalId) {
+    this.openBtn = document.getElementById(openBtnId);
+    this.closeBtn = document.getElementById(closeBtnId);
+    this.modal = document.getElementById(modalId);
+    
+    this.openBtn.addEventListener("click", () => {
+      this.modal.classList.add("open");
+    });
 
-openBtn.addEventListener("click", () => {
-  popupModal.classList.add("open");
-});
-
-closeBtn.addEventListener("click", () => {
-  popupModal.classList.remove("open");
-});
-
-// Adding Book Function
-// Book array
-const books = [];
-
-// Get elements 
-const titleInput = document.getElementById('title');
-const authorInput = document.getElementById('author'); 
-const pagesInput = document.getElementById('pages');
-const readInput = document.getElementById('read');
-const addBtn = document.getElementById('add');
-const bookModal = document.getElementById('inputModal');
-const booksList = document.getElementById('books');
-
-// Add book function
-function addBook() {
-  const title = titleInput.value;
-  const author = authorInput.value;
-  const pages = pagesInput.value;
-  const read = readInput.checked;
-  
-  const book = { 
-    title, 
-    author,
-    pages,
-    read 
-  };
-  
-  books.push(book);
-  
-  bookModal.classList.remove('open');
-  
-  displayBooks();
+    this.closeBtn.addEventListener("click", () => {
+      this.modal.classList.remove("open");
+    });
+  }
 }
 
-// Display books as cards
-function displayBooks() {
+class BookManager {
+  constructor() {
+    this.books = [];
+    this.titleInput = document.getElementById('title');
+    this.authorInput = document.getElementById('author');
+    this.pagesInput = document.getElementById('pages');
+    this.readInput = document.getElementById('read');
+    this.addBtn = document.getElementById('add');
+    this.bookModal = document.getElementById('inputModal');
+    this.booksList = document.getElementById('books');
 
-  booksList.innerHTML = '';
-
-  let card;
-
-  books.forEach(book => {
-
-    if(book.read) {
-      readText = 'Yes';
-    } else {
-      readText = 'No';
-    }
-
-// Create card element
-const card = document.createElement('div');
-  card.classList.add('card');
-// Create card content
-const title = document.createElement('h3');
-  title.textContent = book.title;
-
-const author = document.createElement('p');
-  author.textContent = `Author: ${book.author}`;
-
-const pages = document.createElement('p'); 
-  pages.textContent = `Pages: ${book.pages}`;
-
-const readStatusSelectDiv = document.createElement('div');
-  readStatusSelectDiv.classList.add('statusContainer');
-
-const readStatusSelect = document.createElement('select');
-const readStatusOptions = ['Yes', 'No', 'In progress'];
-  readStatusSelect.innerHTML = readStatusOptions.map(option => `<option value="${option}">${option}</option>`).join('');
-  readStatusSelect.value = readText;
-  readStatusSelectDiv.appendChild(readStatusSelect);
-
-// Select change handler
-readStatusSelect.addEventListener('change', () => {
-  book.read = readStatusSelect.value === 'Yes'; 
-});
-
-// Append card content
-card.appendChild(title);
-card.appendChild(author); 
-card.appendChild(pages);
-card.appendChild(readStatusSelectDiv);
-// Add card to list
-booksList.appendChild(card);
-
-// Remove button container
-const removeBtnContainer = document.createElement('div');
-  removeBtnContainer.classList.add('removeContainer');
-
-// Remove button
-const index = books.indexOf(book);
-const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove';
-
-  removeBtn.addEventListener('click', () => {
-    // Remove book from array
-    books.splice(index, 1);
-    // Remove card from list
-    booksList.removeChild(card);
-  });
-  // Append button to container
-  removeBtnContainer.appendChild(removeBtn);
-  // Append container to card
-  card.appendChild(removeBtnContainer);
-
-  });
-
-  if(!card) {
-    card = document.createElement('div');
+    this.addBtn.addEventListener('click', () => this.addBook());
+    this.titleInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        this.addBook();
+      }
+    });
   }
 
+  addBook() {
+    const title = this.titleInput.value;
+    const author = this.authorInput.value;
+    const pages = this.pagesInput.value;
+    const read = this.readInput.checked;
+
+    const book = {
+      title,
+      author,
+      pages,
+      read,
+    };
+
+    this.books.push(book);
+
+    this.bookModal.classList.remove('open');
+
+    this.displayBooks();
+  }
+
+  displayBooks() {
+    this.booksList.innerHTML = '';
+
+    this.books.forEach((book, index) => {
+      const card = this.createCard(book, index);
+      this.booksList.appendChild(card);
+    });
+  }
+
+  createCard(book, index) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const title = document.createElement('h3');
+    title.textContent = book.title;
+
+    const author = document.createElement('p');
+    author.textContent = `Author: ${book.author}`;
+
+    const pages = document.createElement('p');
+    pages.textContent = `Pages: ${book.pages}`;
+
+    // Create select element for read status
+    const readStatusSelectDiv = document.createElement('div');
+    readStatusSelectDiv.classList.add('statusContainer');
+
+    const readStatusSelect = document.createElement('select');
+    const readStatusOptions = ['Yes', 'No', 'In progress'];
+    readStatusSelect.innerHTML = readStatusOptions.map(option => `<option value="${option}">${option}</option>`).join('');
+    readStatusSelect.value = book.read ? 'Yes' : 'No';
+    readStatusSelectDiv.appendChild(readStatusSelect);
+
+    readStatusSelect.addEventListener('change', () => {
+      book.read = readStatusSelect.value === 'Yes';
+    });
+
+    // Create remove button
+    const removeBtnContainer = document.createElement('div');
+    removeBtnContainer.classList.add('removeContainer');
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+
+    removeBtn.addEventListener('click', () => {
+      this.books.splice(index, 1);
+      this.displayBooks();
+    });
+
+    removeBtnContainer.appendChild(removeBtn);
+    card.appendChild(title);
+    card.appendChild(author);
+    card.appendChild(pages);
+    card.appendChild(readStatusSelectDiv);
+    card.appendChild(removeBtnContainer);
+
+    return card;
+  }
 }
 
-// Click handler
-addBtn.addEventListener('click', addBook);
+// Instantiate the PopUpModal class
+const popUpModal = new PopUpModal("fill", "add", "inputModal");
 
-// Enter key handler
-titleInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    addBook();
-  }
-});
+// Instantiate the BookManager class
+const bookManager = new BookManager();
